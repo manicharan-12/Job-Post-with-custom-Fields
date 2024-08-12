@@ -134,75 +134,79 @@ const JobPostForm = () => {
   };
 
   return (
-    <FormContainer>
-    {loading && (
+    <>
+      {loading ? (
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <ThreeDots height="80" width="80" color="#007bff" />
         </div>
+      ) : (
+        <FormContainer>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FieldLabel>Job Title</FieldLabel>
+            <Input {...register("title", { required: "Job title is required" })} placeholder="Job Title" />
+            {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+
+            <FieldLabel>Salary Range</FieldLabel>
+            <Input {...register("salary")} placeholder="Salary Range" disabled={watchSalaryNotDisclosed} />
+
+            <Checkbox type="checkbox" {...register("salaryNotDisclosed")} />
+            <span>Do not disclose</span>
+
+            <FieldLabel>Job Description</FieldLabel>
+            <TextArea {...register("description", { required: "Job description is required" })} placeholder="Job Description" />
+            {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+
+            <FieldLabel>About Us</FieldLabel>
+            <TextArea {...register("aboutUs")} placeholder="About Us" />
+
+            <FieldLabel>Qualifications</FieldLabel>
+            <Input {...register("qualifications")} placeholder="Qualifications" />
+
+            <FieldLabel>Role/Position</FieldLabel>
+            <Input {...register("role")} placeholder="Role/Position" />
+
+            <FieldLabel>Industry Type</FieldLabel>
+            <Input {...register("industryType")} placeholder="Industry Type" />
+
+            <FieldLabel>Employment Type</FieldLabel>
+            <Select {...register("employmentType", { required: "Employment type is required" })}>
+              <option value="">Select Employment Type</option>
+              <option value="full-time">Full-Time</option>
+              <option value="part-time">Part-Time</option>
+              <option value="contract">Contract</option>
+              <option value="temporary">Temporary</option>
+              <option value="internship">Internship</option>
+              <option value="freelance">Freelance</option>
+            </Select>
+            {errors.employmentType && <ErrorMessage>{errors.employmentType.message}</ErrorMessage>}
+
+            <FieldLabel>Key Skills - Mandatory</FieldLabel>
+            <Input {...register("keySkillsMandatory")} placeholder="Mandatory Key Skills" />
+
+            <FieldLabel>Key Skills - Nice to Have</FieldLabel>
+            <Input {...register("keySkillsNiceToHave")} placeholder="Nice to Have Key Skills" />
+
+            <Button type="button" onClick={addCustomField}>Add Custom Field</Button>
+
+            {fields.map((field, index) => (
+              <CustomField
+                key={field.id}
+                field={field}
+                control={control}
+                index={index}
+                register={register}
+                remove={() => remove(index)}
+                options={registrationFields}
+              />
+            ))}
+
+            <Button type="submit">Submit Job Post</Button>
+          </form>
+        </FormContainer>
       )}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FieldLabel>Job Title</FieldLabel>
-        <Input {...register("title", { required: "Job title is required" })} placeholder="Job Title" />
-        {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
+    </>
+);
 
-        <FieldLabel>Salary Range</FieldLabel>
-        <Input {...register("salary")} placeholder="Salary Range" disabled={watchSalaryNotDisclosed} />
-
-        <Checkbox type="checkbox" {...register("salaryNotDisclosed")} />
-        <span>Do not disclose</span>
-
-        <FieldLabel>Job Description</FieldLabel>
-        <TextArea {...register("description", { required: "Job description is required" })} placeholder="Job Description" />
-        {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
-
-        <FieldLabel>About Us</FieldLabel>
-        <TextArea {...register("aboutUs")} placeholder="About Us" />
-
-        <FieldLabel>Qualifications</FieldLabel>
-        <Input {...register("qualifications")} placeholder="Qualifications" />
-
-        <FieldLabel>Role/Position</FieldLabel>
-        <Input {...register("role")} placeholder="Role/Position" />
-
-        <FieldLabel>Industry Type</FieldLabel>
-        <Input {...register("industryType")} placeholder="Industry Type" />
-
-        <FieldLabel>Employment Type</FieldLabel>
-        <Select {...register("employmentType", { required: "Employment type is required" })}>
-          <option value="">Select Employment Type</option>
-          <option value="full-time">Full-Time</option>
-          <option value="part-time">Part-Time</option>
-          <option value="contract">Contract</option>
-          <option value="temporary">Temporary</option>
-          <option value="internship">Internship</option>
-          <option value="freelance">Freelance</option>
-        </Select>
-        {errors.employmentType && <ErrorMessage>{errors.employmentType.message}</ErrorMessage>}
-
-        <FieldLabel>Key Skills - Mandatory</FieldLabel>
-        <Input {...register("keySkillsMandatory")} placeholder="Mandatory Key Skills" />
-
-        <FieldLabel>Key Skills - Nice to Have</FieldLabel>
-        <Input {...register("keySkillsNiceToHave")} placeholder="Nice to Have Key Skills" />
-
-        <Button type="button" onClick={addCustomField}>Add Custom Field</Button>
-
-        {fields.map((field, index) => (
-          <CustomField
-            key={field.id}
-            field={field}
-            control={control}
-            index={index}
-            register={register}
-            remove={() => remove(index)}
-            options={registrationFields}
-          />
-        ))}
-
-        <Button type="submit">Submit Job Post</Button>
-      </form>
-    </FormContainer>
-  );
 };
 
 export default JobPostForm;

@@ -140,8 +140,8 @@ const AdminDashboard = () => {
   };
 
   return (
-    <DashboardContainer>
-      {loading && (
+    <>
+      {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
           <ThreeDots
             height="80"
@@ -152,99 +152,103 @@ const AdminDashboard = () => {
             visible={true}
           />
         </div>
+      ) : (
+        <DashboardContainer>
+          <h2>Custom Fields Usage</h2>
+          <Table>
+            <thead>
+              <tr>
+                <Th>Field</Th>
+                <Th>Usage Count</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {customFieldsUsage.map((field) => (
+                <tr key={field._id}>
+                  <Td>{field._id}</Td>
+                  <Td>{field.count}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+
+          <h3>Add New Custom Field</h3>
+          <Select
+            value={newCustomField.label}
+            onChange={(e) => setNewCustomField({ ...newCustomField, label: e.target.value })}
+          >
+            <option value="">Select Label</option>
+            {registrationFields.map((field) => (
+              <option key={field.value} value={field.label}>
+                {field.label}
+              </option>
+            ))}
+          </Select>
+          <Input
+            type="text"
+            value={newCustomField.value}
+            onChange={(e) => setNewCustomField({ ...newCustomField, value: e.target.value })}
+            placeholder="Value"
+          />
+          <Label>
+            <input
+              type="checkbox"
+              checked={newCustomField.mandatory}
+              onChange={(e) => setNewCustomField({ ...newCustomField, mandatory: e.target.checked })}
+            />
+            Mandatory
+          </Label>
+          <Select
+            multiple
+            value={selectedJobPosts}
+            onChange={(e) =>
+              setSelectedJobPosts([...e.target.options].filter(option => option.selected).map(option => option.value))
+            }
+          >
+            {jobPosts.map((job) => (
+              <option key={job._id} value={job._id}>
+                {job.title}
+              </option>
+            ))}
+          </Select>
+          <Button onClick={addCustomField}>Add Field</Button>
+
+          <h3>Job Posts</h3>
+          <Table>
+            <thead>
+              <tr>
+                <Th>Job Title</Th>
+                <Th>Custom Fields</Th>
+                <Th>Actions</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {jobPosts.map((job) => (
+                <tr key={job._id}>
+                  <Td>{job.title}</Td>
+                  <Td>
+                    {job.customFields.map((field) => (
+                      <div key={field._id}>
+                        {field.label}: {field.value}
+                      </div>
+                    ))}
+                  </Td>
+                  <Td>
+                    {job.customFields.map((field) => (
+                      <div key={field._id}>
+                        <Button onClick={() => deleteCustomField(job._id, field._id)}>Delete</Button>
+                      </div>
+                    ))}
+                  </Td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </DashboardContainer>
       )}
-      <h2>Custom Fields Usage</h2>
-      <Table>
-        <thead>
-          <tr>
-            <Th>Field</Th>
-            <Th>Usage Count</Th>
-          </tr>
-        </thead>
-        <tbody>
-          {customFieldsUsage.map((field) => (
-            <tr key={field._id}>
-              <Td>{field._id}</Td>
-              <Td>{field.count}</Td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+    </>
+);
 
-      <h3>Add New Custom Field</h3>
-      <Select
-        value={newCustomField.label}
-        onChange={(e) => setNewCustomField({ ...newCustomField, label: e.target.value })}
-      >
-        <option value="">Select Label</option>
-        {registrationFields.map((field) => (
-          <option key={field.value} value={field.label}>
-            {field.label}
-          </option>
-        ))}
-      </Select>
-      <Input
-        type="text"
-        value={newCustomField.value}
-        onChange={(e) => setNewCustomField({ ...newCustomField, value: e.target.value })}
-        placeholder="Value"
-      />
-      <Label>
-        <input
-          type="checkbox"
-          checked={newCustomField.mandatory}
-          onChange={(e) => setNewCustomField({ ...newCustomField, mandatory: e.target.checked })}
-        />
-        Mandatory
-      </Label>
-      <Select
-        multiple
-        value={selectedJobPosts}
-        onChange={(e) =>
-          setSelectedJobPosts([...e.target.options].filter(option => option.selected).map(option => option.value))
-        }
-      >
-        {jobPosts.map((job) => (
-          <option key={job._id} value={job._id}>
-            {job.title}
-          </option>
-        ))}
-      </Select>
-      <Button onClick={addCustomField}>Add Field</Button>
-
-      <h3>Job Posts</h3>
-      <Table>
-        <thead>
-          <tr>
-            <Th>Job Title</Th>
-            <Th>Custom Fields</Th>
-            <Th>Actions</Th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobPosts.map((job) => (
-            <tr key={job._id}>
-              <Td>{job.title}</Td>
-              <Td>
-                {job.customFields.map((field) => (
-                  <div key={field._id}>
-                    {field.label}: {field.value}
-                  </div>
-                ))}
-              </Td>
-              <Td>
-                {job.customFields.map((field) => (
-                  <div key={field._id}>
-                    <Button onClick={() => deleteCustomField(job._id, field._id)}>Delete</Button>
-                  </div>
-                ))}
-              </Td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </DashboardContainer>
-  );
 };
 
 export default AdminDashboard;
