@@ -102,7 +102,7 @@ const JobPostForm = () => {
     const fetchRegistrationFields = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/api/registrationFields');
+        const response = await axios.get('https://job-post-with-custom-fields.onrender.com/api/registrationFields');
         setRegistrationFields(response.data);
       } catch (error) {
         console.error('Error fetching registration fields:', error);
@@ -117,7 +117,7 @@ const JobPostForm = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/jobPosts', data);
+      const response = await axios.post('https://job-post-with-custom-fields.onrender.com/api/jobPosts', data);
       console.log('Job Post Created:', response.data);
       alert('Job post created successfully!');
       reset();

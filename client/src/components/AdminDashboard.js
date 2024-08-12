@@ -70,16 +70,16 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false); // Loading state
 
   useEffect(() => {
-    setLoading(true); // Start loading
+    setLoading(true);
     fetchCustomFieldsUsage();
     fetchJobPosts();
     fetchRegistrationFields();
-    setLoading(false); // Stop loading
+    setLoading(false);
   }, []);
 
   const fetchCustomFieldsUsage = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/admin/custom-fields-usage');
+      const response = await axios.get('https://job-post-with-custom-fields.onrender.com/api/admin/custom-fields-usage');
       setCustomFieldsUsage(response.data);
     } catch (error) {
       console.error('Error fetching custom fields usage:', error);
@@ -88,7 +88,7 @@ const AdminDashboard = () => {
 
   const fetchJobPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/jobPosts');
+      const response = await axios.get('https://job-post-with-custom-fields.onrender.com/api/jobPosts');
       setJobPosts(response.data);
     } catch (error) {
       console.error('Error fetching job posts:', error);
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
 
   const fetchRegistrationFields = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/registrationFields');
+      const response = await axios.get('https://job-post-with-custom-fields.onrender.com/api/registrationFields');
       setRegistrationFields(response.data);
     } catch (error) {
       console.error('Error fetching registration fields:', error);
@@ -109,33 +109,33 @@ const AdminDashboard = () => {
       alert('Please fill in all fields and select at least one job post.');
       return;
     }
-    setLoading(true); // Start loading
+    setLoading(true); 
     try {
-      await axios.post('http://localhost:5000/api/admin/add-custom-field', {
+      await axios.post('https://job-post-with-custom-fields.onrender.com/api/admin/add-custom-field', {
         jobPostIds: selectedJobPosts,
         ...newCustomField,
       });
       setNewCustomField({ label: '', value: '', mandatory: false });
       setSelectedJobPosts([]);
       fetchCustomFieldsUsage();
-      fetchJobPosts(); // Refresh job posts after adding a custom field
+      fetchJobPosts(); 
     } catch (error) {
       console.error('Error adding custom field:', error);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false); 
     }
   };
 
   const deleteCustomField = async (jobId, fieldId) => {
-    setLoading(true); // Start loading
+    setLoading(true); 
     try {
-      await axios.delete(`http://localhost:5000/api/admin/${jobId}/customField/${fieldId}`);
+      await axios.delete(`https://job-post-with-custom-fields.onrender.com/api/admin/${jobId}/customField/${fieldId}`);
       fetchJobPosts();
       fetchCustomFieldsUsage();
     } catch (error) {
       console.error('Error deleting custom field:', error);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 

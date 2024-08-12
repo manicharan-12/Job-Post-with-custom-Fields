@@ -10,7 +10,11 @@ const admin=require('./routes/admin')
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://job-post-with-custom-fields.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 app.use(bodyParser.json());
 
 // Database connection
